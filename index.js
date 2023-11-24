@@ -11,7 +11,8 @@ const toursRoute = require("./routes/toursRoute");
 const busRoute = require("./routes/busRoute");
 const trainRoute = require("./routes/trainRoute");
 const hajjRoute = require("./routes/hajjRoute");
-const Uploader = require("./middleware/PdfUpload");
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
 
 app.use(cors());
 app.use(express.json());
@@ -25,35 +26,46 @@ app.use("/api/v1", trainRoute);
 app.use("/api/v1", toursRoute);
 app.use("/api/v1", hajjRoute);
 
-// app.post(
-//   "/api/v1/uploads/pdf",
-//   Uploader
-//   async (req, res) => {
-//     try {
-//       const files = req.files;
-//       const imageLinks = files.map((file) => `/uploads/${file.filename}`);
-//       res.status(200).json({
-//         message: "success",
-//         imageLinks,
-//       });
-//     } catch (error) {
-//       res.send("Internal server error");
-//     }
-//   }
-// );
-
-app.post("/api/v1/uploads/pdf", (req, res) => {
-  Uploader(req, res, (err) => {
-    if (err) {
-      // Handle the error (e.g., invalid file type)
-      return res.status(400).send("Error uploading files");
-    }
-
-    // Files are uploaded successfully
-    const imageLinks = req.files.map((file) => file.path);
-    res.status(200).json({ message: "success", imageLinks });
-  });
+cloudinary.config({
+  cloud_name: process.env.NEXT_CLOUDINARY_NAME,
+  api_key: process.env.NEXT_CLOUDINARY_API_KEY,
+  api_secret: process.env.NEXT_CLOUDINARY_API_SECRET,
 });
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+app.post(
+  "/api/v1/uploads/pdf",
+  upload.array("pdfFiles", 5),
+  async (req, res) => {
+    try {
+      const uploadPromises = req.files.map((file) => {
+        return new Promise((resolve, reject) => {
+          cloudinary.uploader
+            .upload_stream(
+              { resource_type: "auto", folder: "pdf_files" },
+              (error, result) => {
+                if (error) {
+                  reject(error);
+                } else {
+                  // Do something with the Cloudinary result (e.g., save the URL to a database)
+                  resolve(result);
+                }
+              }
+            )
+            .end(file.buffer);
+        });
+      });
+
+      const uploadResults = await Promise.all(uploadPromises);
+      const imageLinks = uploadResults.map((result) => result.secure_url);
+      res.json({ message: "success", imageLinks });
+    } catch (error) {
+      res.status(500).json({ error: "Something went wrong" });
+    }
+  }
+);
 
 app.get("/", (req, res) => {
   res.send("Ghurunti start");
