@@ -22,7 +22,20 @@ const postTrainSchema = new mongoose.Schema(
       type: String,
       // required: [true, "Surname is required"],
     },
-    date: {
+    city_from: {
+      type: String,
+      // required: [true, "Surname is required"],
+    },
+    city_to: {
+      type: String,
+      // required: [true, "Surname is required"],
+    },
+     
+    seat_type: {
+      type: String,
+      // required: [true, "Surname is required"],
+    },
+    journey_date: {
       type: String,
       // required: [true, "Surname is required"],
     },

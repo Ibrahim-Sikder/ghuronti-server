@@ -10,8 +10,32 @@ const postToursSchema = new mongoose.Schema(
       type: String,
       // required: [true, "Name is required"],
     },
-    date: {
+    journey_date: {
       type: String,
+      // required: [true, "Email is required"],
+    },
+    country_name: {
+      type: String,
+      // required: [true, "Email is required"],
+    },
+    travel_from: {
+      type: String,
+      // required: [true, "Email is required"],
+    },
+    child: {
+      type: Number,
+      // required: [true, "Email is required"],
+    },
+    adult: {
+      type: Number,
+      // required: [true, "Email is required"],
+    },
+    room_number: {
+      type: String || Number,
+      // required: [true, "Email is required"],
+    },
+    time: {
+      type: String || Number,
       // required: [true, "Email is required"],
     },
     price: {

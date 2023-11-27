@@ -2,6 +2,41 @@ const mongoose = require("mongoose");
 
 const postBusSchema = new mongoose.Schema(
   {
+    bus_name: {
+      type: String,
+      // required: [true, "Name is required"],
+    },
+    starting_point: {
+      type: String,
+      // required: [true, "Name is required"],
+    },
+    end_point: {
+      type: String,
+      // required: [true, "Name is required"],
+    },
+    starting_time: {
+      type: String || Number,
+      // required: [true, "Name is required"],
+    },
+    end_time: {
+      type: String || Number,
+      // required: [true, "Name is required"],
+    },
+    price: {
+      type: Number,
+    },
+    journey_date: {
+      type: String,
+    },
+    child: {
+      type: Number,
+    },
+    adult: {
+      type: Number,
+    },
+    seat_type: {
+      type: String,
+    },
     operators: {
       type: String,
       // required: [true, "Name is required"],
@@ -18,13 +53,8 @@ const postBusSchema = new mongoose.Schema(
       type: String,
       // required: [true, "Surname is required"],
     },
-    price: {
-      type: Number,
-    },
-    date: {
-      type: String,
-    },
-
+    
+     
     image:[ {
       type: String,
       // required: [true, "Mobile number is required"],
