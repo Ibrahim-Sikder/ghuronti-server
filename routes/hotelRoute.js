@@ -7,6 +7,10 @@ router
   .post(hotelController.createHotelConfirmation);
 router.route("/hotel/details").post(hotelController.createHotelDetails);
 router.route("/hotel/get/packages").post(hotelController.getHotelPackages);
-router.route("/hotel/:id").delete(hotelController.deleteHotelPackage);
+router
+  .route("/hotel/:id")
+  .get(hotelController.getSpecificPackage)
+  .delete(hotelController.deleteHotelPackage);
+router.route("/hotel/update/:id").put(hotelController.updateHotelPackage);
 
 module.exports = router;

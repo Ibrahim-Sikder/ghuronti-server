@@ -19,8 +19,7 @@ exports.createTrainDetails = async (req, res) => {
 
 exports.getTrainPackages = async (req, res) => {
   try {
-    const { city_from, city_to, journey_date , seat_type } =
-      req.body;
+    const { city_from, city_to, journey_date, seat_type } = req.body;
 
     let getPackage;
     if (!city_from || !city_to || !journey_date || !seat_type) {
@@ -55,7 +54,6 @@ exports.getTrainPackages = async (req, res) => {
   }
 };
 
-
 exports.getPackageForAddPage = async (req, res) => {
   try {
     const getPackage = await PostTrainDetails.find({}).sort({ createdAt: -1 });
@@ -79,6 +77,38 @@ exports.deleteTrainPackage = async (req, res) => {
   }
 };
 
+
+exports.getSpecificPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const getPackage = await PostTrainDetails.findOne({ _id: id });
+
+    res.status(200).json({ message: "Gei specific package.", getPackage });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+exports.updateTrainPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const trainDetails = req.body;
+
+    const updateTrainInfo = await PostTrainDetails.updateMany(
+      { _id: id },
+      {
+        $set: trainDetails,
+      },
+      { runValidators: true }
+    );
+
+    res.status(200).json({ message: "Package update successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 // train confirmation
 exports.createTrainConfirmation = async (req, res) => {
   try {

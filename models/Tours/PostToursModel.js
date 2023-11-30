@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const postToursSchema = new mongoose.Schema(
   {
+    travel_from: {
+      type: String,
+      // required: [true, "Email is required"],
+    },
     title: {
       type: String,
       // required: [true, "Name is required"],
@@ -18,10 +22,11 @@ const postToursSchema = new mongoose.Schema(
       type: String,
       // required: [true, "Email is required"],
     },
-    travel_from: {
+    city_name: {
       type: String,
       // required: [true, "Email is required"],
     },
+   
     child: {
       type: Number,
       // required: [true, "Email is required"],

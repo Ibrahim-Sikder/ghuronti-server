@@ -39,6 +39,39 @@ exports.deleteVisaPackage = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+exports.updateVisaPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const visaDetails = req.body;
+
+    const updateVisaInfo = await VisaDetails.updateMany(
+      { _id: id },
+      {
+        $set: visaDetails,
+      },
+      { runValidators: true }
+    );
+
+    res.status(200).json({ message: "Package update successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+exports.getSpecificPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const getPackage = await VisaDetails.findOne({ _id: id });
+
+    res.status(200).json({ message: "Gei specific package.", getPackage });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 // getVisaPackages
 exports.getVisaPackages = async (req, res) => {
   try {

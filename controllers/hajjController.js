@@ -3,9 +3,7 @@ const HajjDetails = require("../models/Hajj/HajjPackageModel");
 exports.createHajjDetails = async (req, res) => {
   try {
     const hajjDetails = new HajjDetails(req.body);
-    console.log(hajjDetails);
     const result = await hajjDetails.save();
-    console.log(result);
     res.status(200).json({
       message: "Post hajj package details.",
       result,
@@ -40,10 +38,64 @@ exports.getHajjPackages = async (req, res) => {
 exports.deleteHajjPackage = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id)
+    console.log(id);
     const getPackage = await HajjDetails.deleteOne({ _id: id });
- 
-    res.status(200).json({ message:"Package delete successful" });
+
+    res.status(200).json({ message: "Package delete successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+exports.getSpecificPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const getPackage = await HajjDetails.findOne({ _id: id });
+
+    res.status(200).json({ message: "Gei specific package.", getPackage });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+exports.updateHajjPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const {
+      hajj_package,
+      title,
+      sub_title,
+      date,
+      price,
+      day_night,
+      requirement_list,
+      popular_hajj_package,
+      image,
+      description,
+    } = req.body;
+
+    const updateHajjInfo = await HajjDetails.updateMany(
+      { _id: id },
+      {
+        $set: {
+          hajj_package,
+          title,
+          sub_title,
+          date,
+          price,
+          day_night,
+          requirement_list,
+          popular_hajj_package,
+          image,
+          description,
+        },
+      },
+      { runValidators: true }
+    );
+
+    res.status(200).json({ message: "Package update successful" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

@@ -63,7 +63,6 @@ exports.getBusPackages = async (req, res) => {
   }
 };
 
-
 exports.getPackageForAddPage = async (req, res) => {
   try {
     const getPackage = await PostBusDetails.find({}).sort({ createdAt: -1 });
@@ -86,7 +85,73 @@ exports.deleteBusPackage = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+exports.updateBusPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const {
+      bus_name,
+      starting_point,
+      end_point,
+      starting_time,
+      end_time,
+      price,
+      journey_date,
+      child,
+      adult,
+      seat_type,
+      operators,
+      type_of_bus,
+      boarding_point,
+      facilities,
+      image,
+      description,
+    } = req.body;
 
+    const updateBusInfo = await PostBusDetails.updateMany(
+      { _id: id },
+      {
+        $set: {
+          bus_name,
+          starting_point,
+          end_point,
+          starting_time,
+          end_time,
+          price,
+          journey_date,
+          child,
+          adult,
+          seat_type,
+          operators,
+          type_of_bus,
+          boarding_point,
+          facilities,
+          image,
+          description,
+        },
+      },
+      { runValidators: true }
+    );
+
+    res.status(200).json({ message: "Package update successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+exports.getSpecificPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const getPackage = await PostBusDetails.findOne({ _id: id });
+
+    res.status(200).json({ message: "Gei specific package.", getPackage });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 // bus confirmation
 
 exports.createBusConfirmation = async (req, res) => {

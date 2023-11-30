@@ -24,7 +24,7 @@ const hajjPackageSchema = new mongoose.Schema(
       type: Number,
     },
     day_night: {
-      type:   String,
+      type: String,
     },
     requirement_list: {
       type: String,
@@ -34,15 +34,17 @@ const hajjPackageSchema = new mongoose.Schema(
       type: String,
       // required: [true, "Email is required"],
     },
-    image: [{
-      type: String,
-    }],
+    image: [
+      {
+        type: String,
+      },
+    ],
     description: {
       type: String,
     },
-    hajj_category: {
-      type: String,
-    },
+    // hajj_category: {
+    //   type: String,
+    // },
   },
   {
     timestamps: true,

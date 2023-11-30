@@ -50,6 +50,57 @@ exports.deleteUmrahPackage = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+exports.updateUmrahPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const {
+      title,
+      sub_title,
+      latest_umrah_package,
+      day_night,
+      date,
+      price,
+      image,
+      description,
+    } = req.body;
+
+    const updateUmrahInfo = await UmrahDetails.updateMany(
+      { _id: id },
+      {
+        $set: {
+          title,
+          sub_title,
+          latest_umrah_package,
+          day_night,
+          date,
+          price,
+          image,
+          description,
+        },
+      },
+      { runValidators: true }
+    );
+
+    res.status(200).json({ message: "Package update successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+exports.getSpecificPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const getPackage = await UmrahDetails.findOne({ _id: id });
+
+    res.status(200).json({ message: "Gei specific package.", getPackage });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 // confirmation
 exports.createUmrahPost = async (req, res) => {
   try {

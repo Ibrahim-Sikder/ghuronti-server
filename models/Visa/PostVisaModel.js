@@ -27,6 +27,11 @@ const postVisaSchema = new mongoose.Schema(
       // type: mongoose.Schema.Types.Mixed,
       // required: [true, "Surname is required"],
     },
+    interview: {
+      type: String,
+      // type: mongoose.Schema.Types.Mixed,
+      // required: [true, "Surname is required"],
+    },
     processing_time: {
       type: String || Number,
       // required: [true, "Surname is required"],
@@ -48,6 +53,14 @@ const postVisaSchema = new mongoose.Schema(
       // required: [true, "Surname is required"],
     },
      stay: {
+      type: String || Number,
+      // required: [true, "Surname is required"],
+    },
+    max_stay: {
+      type: String || Number,
+      // required: [true, "Surname is required"],
+    },
+    validity_day: {
       type: String || Number,
       // required: [true, "Surname is required"],
     },

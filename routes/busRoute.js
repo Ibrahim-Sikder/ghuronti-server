@@ -8,6 +8,10 @@ router
   .post(busController.createBusConfirmation);
 router.route("/bus/details").post(busController.createBusPostDetails);
 router.route("/bus/gets/packages").post(busController.getBusPackages);
-router.route("/bus/:id").delete(busController.deleteBusPackage);
+router
+  .route("/bus/:id")
+  .get(busController.getSpecificPackage)
+  .delete(busController.deleteBusPackage);
+router.route("/bus/update/:id").put(busController.updateBusPackage);
 
 module.exports = router;

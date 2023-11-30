@@ -7,6 +7,10 @@ router
   .get(hajjController.getPackageForAddPage)
   .post(hajjController.getHajjPackages);
 router.route("/hajj/details").post(hajjController.createHajjDetails);
-router.route("/hajj/:id").delete(hajjController.deleteHajjPackage);
+router
+  .route("/hajj/:id")
+  .get(hajjController.getSpecificPackage)
+  .delete(hajjController.deleteHajjPackage);
+router.route("/hajj/update/:id").put(hajjController.updateHajjPackage);
 
 module.exports = router;

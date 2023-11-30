@@ -2,6 +2,22 @@ const mongoose = require("mongoose");
 
 const postTrainSchema = new mongoose.Schema(
   {
+    travel_from: {
+      type: String,
+      // required: [true, "Name is required"],
+    },
+    travel_to: {
+      type: String,
+      // required: [true, "Name is required"],
+    },
+    train_name: {
+      type: String,
+      // required: [true, "Name is required"],
+    },
+    title: {
+      type: String,
+      // required: [true, "Name is required"],
+    },
     country_name: {
       type: String,
       // required: [true, "Name is required"],
@@ -10,44 +26,35 @@ const postTrainSchema = new mongoose.Schema(
       type: String,
       // required: [true, "Name is required"],
     },
-    address: {
+    class_type: {
       type: String,
       // required: [true, "Email is required"],
     },
-    category_type: {
-      type: String,
-      // required: [true, "Email is required"],
-    },
-    product_category: {
+    journey_date: {
       type: String,
       // required: [true, "Surname is required"],
     },
-    city_from: {
-      type: String,
-      // required: [true, "Surname is required"],
-    },
-    city_to: {
-      type: String,
-      // required: [true, "Surname is required"],
-    },
-     
     seat_type: {
       type: String,
       // required: [true, "Surname is required"],
     },
-    journey_date: {
-      type: String,
+    departure_time: {
+      type: String || Number,
+      // required: [true, "Email is required"],
+    },
+    arrival_time: {
+      type: String || Number,
       // required: [true, "Surname is required"],
     },
     price: {
       type: Number,
       // required: [true, "Surname is required"],
     },
-    title: {
+    starting_point: {
       type: String,
       // required: [true, "Surname is required"],
     },
-    sub_title: {
+    end_point: {
       type: String,
       // required: [true, "Surname is required"],
     },

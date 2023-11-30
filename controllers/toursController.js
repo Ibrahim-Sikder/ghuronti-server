@@ -53,7 +53,6 @@ exports.getToursPackages = async (req, res) => {
   }
 };
 
-
 exports.getPackageForAddPage = async (req, res) => {
   try {
     const getPackage = await ToursDetails.find({}).sort({ createdAt: -1 });
@@ -71,6 +70,80 @@ exports.deleteToursPackage = async (req, res) => {
     const getPackage = await ToursDetails.deleteOne({ _id: id });
 
     res.status(200).json({ message: "Package delete successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+exports.updateToursPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const {
+      title,
+      sub_title,
+      journey_date,
+      price,
+      country_name,
+      travel_from,
+      child,
+      adult,
+      time,
+
+      included,
+      excluded,
+      itinary,
+      category_type,
+      product_category,
+      price_low_to_hight,
+      price_hight_to_low,
+      image,
+      description,
+    } = req.body;
+
+    const updateToursInfo = await ToursDetails.updateMany(
+      { _id: id },
+      {
+        $set: {
+          title,
+          sub_title,
+          journey_date,
+          price,
+          country_name,
+          travel_from,
+          child,
+          adult,
+          time,
+
+          included,
+          excluded,
+          itinary,
+          category_type,
+          product_category,
+          price_low_to_hight,
+          price_hight_to_low,
+          image,
+          description,
+        },
+      },
+      { runValidators: true }
+    );
+
+    res.status(200).json({ message: "Package update successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+exports.getSpecificPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const getPackage = await ToursDetails.findOne({ _id: id });
+
+    res.status(200).json({ message: "Gei specific package.", getPackage });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

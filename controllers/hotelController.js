@@ -79,6 +79,18 @@ exports.getPackageForAddPage = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+exports.getSpecificPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const getPackage = await HotelDetails.findOne({ _id: id });
+
+    res.status(200).json({ message: "Gei specific package.", getPackage });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 exports.deleteHotelPackage = async (req, res) => {
   try {
     const id = req.params.id;
@@ -86,6 +98,72 @@ exports.deleteHotelPackage = async (req, res) => {
     const getPackage = await HotelDetails.deleteOne({ _id: id });
 
     res.status(200).json({ message: "Package delete successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+exports.updateHotelPackage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const {
+      hotel_name,
+      title,
+      sub_title,
+      address,
+      country_name,
+      city_name,
+      day_night,
+      price_per_person,
+      price_twin_person,
+      price_triple_person,
+      check_in_date,
+      check_out_date,
+      child,
+      adult,
+      room_number,
+      hotel_type,
+      highest_price,
+      lowest_price,
+      start_price,
+      discount_price,
+      image,
+      description,
+    } = req.body;
+
+    const updateHotelInfo = await HotelDetails.updateMany(
+      { _id: id },
+      {
+        $set: {
+          hotel_name,
+          title,
+          sub_title,
+          address,
+          country_name,
+          city_name,
+          day_night,
+          price_per_person,
+          price_twin_person,
+          price_triple_person,
+          check_in_date,
+          check_out_date,
+          child,
+          adult,
+          room_number,
+          hotel_type,
+          highest_price,
+          lowest_price,
+          start_price,
+          discount_price,
+          image,
+          description,
+        },
+      },
+      { runValidators: true }
+    );
+
+    res.status(200).json({ message: "Package update successful" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
