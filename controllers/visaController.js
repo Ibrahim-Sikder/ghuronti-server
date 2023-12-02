@@ -1,5 +1,6 @@
 const VisaConfirmation = require("../models/Visa/VisaModel");
 const VisaDetails = require("../models/Visa/PostVisaModel");
+const VisaRequirement = require("../models/Visa/VisaRequirements");
 
 exports.createVisaDetails = async (req, res) => {
   try {
@@ -70,6 +71,39 @@ exports.getSpecificPackage = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// for getVisaRequirement
+
+exports.postVisaRequirement = async (req, res) => {
+  try {
+    const postVisaRequirement = new VisaRequirement(req.body);
+    // console.log(postVisaRequirement);
+    const result = await postVisaRequirement.save();
+    console.log(result);
+    res.status(200).json({
+      message: "Successfully visa details posted.",
+      result,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Internal server error");
+  }
+};
+exports.getVisaRequirement = async (req, res) => {
+  try {
+    const { visa_type } = req.body;
+    // console.log(getVisaRequirement);
+    const result = await VisaRequirement.findOne({ visa_type });
+    console.log(result);
+    res.status(200).json({
+      message: "Successfully visa details posted.",
+      result,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Internal server error");
   }
 };
 // getVisaPackages

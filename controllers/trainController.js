@@ -19,22 +19,22 @@ exports.createTrainDetails = async (req, res) => {
 
 exports.getTrainPackages = async (req, res) => {
   try {
-    const { city_from, city_to, journey_date, seat_type } = req.body;
+    const { travel_from, travel_to, journey_date, class_type } = req.body;
 
     let getPackage;
-    if (!city_from || !city_to || !journey_date || !seat_type) {
+    if (!travel_from || !travel_to || !journey_date || !class_type) {
       res.status(200).json({
         message: "Please select all the field.",
       });
     } else {
-      const lowerCaseCityFrom = city_from.toLowerCase();
-      const lowerCaseCityTo = city_to.toLowerCase();
+      const lowerCaseCityFrom = travel_from.toLowerCase();
+      const lowerCaseCityTo = travel_to.toLowerCase();
 
       getPackage = await PostTrainDetails.find({
-        city_from: { $regex: new RegExp(lowerCaseCityFrom, "i") },
-        city_to: { $regex: new RegExp(lowerCaseCityTo, "i") },
+        travel_from: { $regex: new RegExp(lowerCaseCityFrom, "i") },
+        travel_to: { $regex: new RegExp(lowerCaseCityTo, "i") },
         journey_date,
-        seat_type,
+        class_type,
         // room_number,
       });
       if (getPackage.length === 0) {

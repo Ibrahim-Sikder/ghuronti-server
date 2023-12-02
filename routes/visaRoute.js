@@ -13,5 +13,12 @@ router
   .get(visaController.getSpecificPackage)
   .delete(visaController.deleteVisaPackage);
 router.route("/visa/update/:id").put(visaController.updateVisaPackage);
+// for requirement
+// router
+//   .route("/visa/requirement/post/type")
+//   .post(visaController.postVisaRequirement);
+// router
+//   .route("/visa/requirement/get/type/specific")
+//   .post(visaController.getVisaRequirement);
 
 module.exports = router;
