@@ -13,6 +13,49 @@ exports.createHajjDetails = async (req, res) => {
     res.send("Internal server error");
   }
 };
+exports.getOneHajjDetails = async (req, res) => {
+  try {
+    const { hajj_package } = req.body;
+
+    let economy;
+
+    if (hajj_package === "Economy Hajj Package") {
+      economy = await HajjDetails.find({ hajj_package })
+        .sort({
+          createdAt: -1,
+        })
+        .limit(1);
+    }
+    let nonShifting;
+
+    if (hajj_package === "Non Shifting Hajj Package") {
+      nonShifting = await HajjDetails.find({ hajj_package })
+        .sort({
+          createdAt: -1,
+        })
+        .limit(1);
+    }
+    let shifting;
+
+    if (hajj_package === "Shifting Hajj Package") {
+      shifting = await HajjDetails.find({ hajj_package })
+        .sort({
+          createdAt: -1,
+        })
+        .limit(1);
+    }
+
+    res.status(200).json({
+      message: "Post hajj package details.",
+      economy,
+      nonShifting,
+      shifting,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Internal server error");
+  }
+};
 
 exports.getPackageForAddPage = async (req, res) => {
   try {

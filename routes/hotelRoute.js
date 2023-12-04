@@ -8,6 +8,9 @@ router
 router.route("/hotel/details").post(hotelController.createHotelDetails);
 router.route("/hotel/get/packages").post(hotelController.getHotelPackages);
 router
+  .route("/hotel/get/packages/filter")
+  .post(hotelController.getHotelPackageForPriceFilter);
+router
   .route("/hotel/:id")
   .get(hotelController.getSpecificPackage)
   .delete(hotelController.deleteHotelPackage);

@@ -38,7 +38,7 @@ exports.getHotelPackages = async (req, res) => {
       !adult ||
       !room_number
     ) {
-      res.status(200).json({
+      res.status(400).json({
         message: "Please select all the field.",
       });
     } else {
@@ -50,10 +50,10 @@ exports.getHotelPackages = async (req, res) => {
         child,
         adult,
         room_number,
-      });
+      }).sort({ createdAt: -1 });
 
       if (getPackage.length === 0) {
-        res.status(200).json({
+        res.status(400).json({
           message: "No matching package found.",
         });
       } else {
@@ -66,6 +66,41 @@ exports.getHotelPackages = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.send("Internal server error");
+  }
+};
+
+exports.getHotelPackageForPriceFilter = async (req, res) => {
+  try {
+    const {
+      price,
+      country_name,
+      city_name,
+      check_in_date,
+      check_out_date,
+      child,
+      adult,
+      room_number,
+    } = req.body;
+
+    const getPackage = await HotelDetails.find({
+      country_name,
+      city_name,
+      check_in_date,
+      check_out_date,
+      child,
+      adult,
+      room_number,
+      highest_price: { $gte: price[0], $lte: price[1] },
+    }).sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      message:
+        "Successfully got hotel details within the specified price range.",
+      getPackage,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send("Internal server error");
   }
 };
 

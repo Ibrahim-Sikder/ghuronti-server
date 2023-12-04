@@ -95,10 +95,64 @@ exports.getSpecificPackage = async (req, res) => {
 
     const getPackage = await UmrahDetails.findOne({ _id: id });
 
-    res.status(200).json({ message: "Gei specific package.", getPackage });
+    res.status(200).json({ message: "Get specific package.", getPackage });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+exports.getOneUmrahDetails = async (req, res) => {
+  try {
+    const { latest_umrah_package } = req.body;
+
+    let umrahInRamadan;
+
+    if (latest_umrah_package === "Umrah In Ramadan") {
+      umrahInRamadan = await UmrahDetails.find({ latest_umrah_package })
+        .sort({
+          createdAt: -1,
+        })
+        .limit(1);
+    }
+    let premium;
+
+    if (latest_umrah_package === "Premium Umrah Packages") {
+      premium = await UmrahDetails.find({ latest_umrah_package })
+        .sort({
+          createdAt: -1,
+        })
+        .limit(1);
+    }
+    let platinum;
+
+    if (latest_umrah_package === "Platinum Umrah Packages") {
+      platinum = await UmrahDetails.find({ latest_umrah_package })
+        .sort({
+          createdAt: -1,
+        })
+        .limit(1);
+    }
+    let family;
+    if (latest_umrah_package === "Family Umrah Packages") {
+      family = await UmrahDetails.find({ latest_umrah_package })
+        .sort({
+          createdAt: -1,
+        })
+        .limit(1);
+    }
+
+    res.status(200).json({
+      message: "Post hajj package details.",
+      umrahInRamadan,
+      premium,
+      platinum,
+      family
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Internal server error");
   }
 };
 // confirmation
