@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const postBusSchema = new mongoose.Schema(
   {
-    bus_name: {
-      type: String,
+    Job_no: {
+      type: Number,
       // required: [true, "Name is required"],
     },
     starting_point: {

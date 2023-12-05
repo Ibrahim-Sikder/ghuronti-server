@@ -1,6 +1,7 @@
 const VisaConfirmation = require("../models/Visa/VisaModel");
 const VisaDetails = require("../models/Visa/PostVisaModel");
 const VisaRequirement = require("../models/Visa/VisaRequirements");
+const mongoose = require("mongoose");
 
 exports.createVisaDetails = async (req, res) => {
   try {
@@ -83,7 +84,20 @@ exports.postVisaRequirement = async (req, res) => {
     const result = await postVisaRequirement.save();
     console.log(result);
     res.status(200).json({
-      message: "Successfully visa details posted.",
+      message: "Successfully visa requirements details posted.",
+      result,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Internal server error");
+  }
+};
+exports.getAllVisaRequirement = async (req, res) => {
+  try {
+    const result = await VisaRequirement.find({}).sort({ createdAt: -1 });
+    console.log(result);
+    res.status(200).json({
+      message: "Successfully visa requirement gets",
       result,
     });
   } catch (error) {
@@ -94,18 +108,86 @@ exports.postVisaRequirement = async (req, res) => {
 exports.getVisaRequirement = async (req, res) => {
   try {
     const { visa_type } = req.body;
-    // console.log(getVisaRequirement);
+
     const result = await VisaRequirement.findOne({ visa_type });
+
+    res.status(200).json({
+      message: "Successfully visa requirement gets",
+      result,
+    });
+  } catch (error) {
+    res.send("Internal server error");
+  }
+};
+exports.deleteVisaRequirement = async (req, res) => {
+  try {
+    const id = req.params.id;
+    // console.log(getVisaRequirement);
+    const result = await VisaRequirement.deleteOne({ _id: id });
     console.log(result);
     res.status(200).json({
-      message: "Successfully visa details posted.",
-      result,
+      message: "Successfully visa requirement deleted",
     });
   } catch (error) {
     console.log(error);
     res.send("Internal server error");
   }
 };
+
+exports.updateVisaRequirement = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const visaRequirement = req.body;
+
+    const updateVisaInfo = await VisaRequirement.updateMany(
+      { _id: id },
+      {
+        $set: visaRequirement,
+      },
+      { runValidators: true }
+    );
+
+    res.status(200).json({ message: "Package update successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+exports.getSingleVisaRequirement = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const result = await VisaRequirement.findOne({ _id: id });
+
+    res
+      .status(200)
+      .json({ message: "Get single visa requirement successful", result });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+// exports.getSingleVisaRequirement = async (req, res) => {
+//   try {
+//     const id = req.params.id;
+
+//     // Check if the provided ID is a valid ObjectId
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//       return res.status(400).json({ error: 'Invalid ObjectId format' });
+//     }
+
+//     const result = await VisaRequirement.findOne({ _id: mongoose.Types.ObjectId(id) });
+
+//     if (!result) {
+//       return res.status(404).json({ error: 'Visa requirement not found' });
+//     }
+
+//     res.status(200).json({ message: 'Get single visa requirement successful', result });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// };
 // getVisaPackages
 exports.getVisaPackages = async (req, res) => {
   try {

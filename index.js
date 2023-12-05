@@ -11,6 +11,7 @@ const toursRoute = require("./routes/toursRoute");
 const busRoute = require("./routes/busRoute");
 const trainRoute = require("./routes/trainRoute");
 const hajjRoute = require("./routes/hajjRoute");
+const hajjRequirementRoute = require("./routes/hajjRequirement")
 const visaRequirement = require("./routes/visaRequirement");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
@@ -27,6 +28,7 @@ app.use("/api/v1", busRoute);
 app.use("/api/v1", trainRoute);
 app.use("/api/v1", toursRoute);
 app.use("/api/v1", hajjRoute);
+app.use("/api/v1", hajjRequirementRoute);
 
 cloudinary.config({
   cloud_name: process.env.NEXT_CLOUDINARY_NAME,

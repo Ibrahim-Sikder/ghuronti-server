@@ -1,4 +1,5 @@
 const HajjDetails = require("../models/Hajj/HajjPackageModel");
+const HajjRequirement = require("../models/Hajj/HajjRequirement");
 
 exports.createHajjDetails = async (req, res) => {
   try {
@@ -139,6 +140,96 @@ exports.updateHajjPackage = async (req, res) => {
     );
 
     res.status(200).json({ message: "Package update successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// for hajj requirements
+
+exports.postHajjRequirement = async (req, res) => {
+  try {
+    const postHajjRequirement = new HajjRequirement(req.body);
+    const result = await postHajjRequirement.save();
+    console.log(result);
+    res.status(200).json({
+      message: "Successfully hajj requirements details posted.",
+      result,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Internal server error");
+  }
+};
+exports.getAllHajjRequirement = async (req, res) => {
+  try {
+    const result = await HajjRequirement.find({}).sort({ createdAt: -1 });
+    console.log(result);
+    res.status(200).json({
+      message: "Successfully hajj requirement gets",
+      result,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Internal server error");
+  }
+};
+// exports.getVisaRequirement = async (req, res) => {
+//   try {
+//     const { visa_type } = req.body;
+
+//     const result = await HajjRequirement.findOne({ visa_type });
+
+//     res.status(200).json({
+//       message: "Successfully visa requirement gets",
+//       result,
+//     });
+//   } catch (error) {
+//     res.send("Internal server error");
+//   }
+// };
+exports.deleteHajjRequirement = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await HajjRequirement.deleteOne({ _id: id });
+    res.status(200).json({
+      message: "Successfully visa requirement deleted",
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Internal server error");
+  }
+};
+
+exports.updateHajjRequirement = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const hajjRequirement = req.body;
+
+    const updateVisaInfo = await HajjRequirement.updateMany(
+      { _id: id },
+      {
+        $set: hajjRequirement,
+      },
+      { runValidators: true }
+    );
+
+    res.status(200).json({ message: "Package update successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+exports.getSingleHajjRequirement = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const result = await HajjRequirement.findOne({ _id: id });
+
+    res
+      .status(200)
+      .json({ message: "Get single visa requirement successful", result });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
