@@ -8,6 +8,7 @@ router
   .post(busController.createBusConfirmation);
 router.route("/bus/details").post(busController.createBusPostDetails);
 router.route("/bus/gets/packages").post(busController.getBusPackages);
+router.route("/bus/gets/packages/filter").post(busController.getBusFilterPackages);
 router
   .route("/bus/:id")
   .get(busController.getSpecificPackage)

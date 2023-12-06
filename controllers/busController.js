@@ -62,6 +62,63 @@ exports.getBusPackages = async (req, res) => {
     res.send("Internal server error");
   }
 };
+exports.getBusFilterPackages = async (req, res) => {
+  try {
+    const {
+      starting_point,
+      end_point,
+      journey_date,
+      child,
+      adult,
+      seat_type,
+      operators,
+      bus_type,
+      boarding_point,
+      facilities,
+    } = req.body;
+
+    let query = {};
+
+    if (operators) {
+      query.operators = { $regex: new RegExp(operators, "i") };
+    }
+    if (bus_type) {
+      query.type_of_bus = { $regex: new RegExp(bus_type, "i") };
+    }
+
+    if (boarding_point) {
+      query.boarding_point = { $regex: new RegExp(boarding_point, "i") };
+    }
+
+    if (facilities) {
+      query.facilities = { $regex: new RegExp(facilities, "i") };
+    }
+
+    const getPackage = await PostBusDetails.find({
+      starting_point: { $regex: new RegExp(starting_point.toLowerCase(), "i") },
+      end_point: { $regex: new RegExp(end_point.toLowerCase(), "i") },
+      journey_date,
+      child,
+      adult,
+      seat_type,
+      ...query,
+    }).sort({ createdAt: -1 });
+
+    if (getPackage.length === 0) {
+      res.status(200).json({
+        message: "No matching package found.",
+      });
+    } else {
+      res.status(200).json({
+        message: "Successfully bus details get.",
+        getPackage,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal server error");
+  }
+};
 
 exports.getPackageForAddPage = async (req, res) => {
   try {
@@ -138,7 +195,6 @@ exports.updateBusPackage = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 
 exports.getSpecificPackage = async (req, res) => {
   try {
