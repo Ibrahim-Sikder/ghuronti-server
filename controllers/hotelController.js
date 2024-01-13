@@ -4,7 +4,7 @@ const HotelDetails = require("../models/Hotel/PostHotelDetails");
 exports.createHotelDetails = async (req, res) => {
   try {
     const postHotel = new HotelDetails(req.body);
-    console.log(postHotel);
+  
     const result = await postHotel.save();
     console.log(result);
     res.status(200).json({
@@ -52,19 +52,13 @@ exports.getHotelPackages = async (req, res) => {
         room_number,
       }).sort({ createdAt: -1 });
 
-      if (getPackage.length === 0) {
-        res.status(400).json({
-          message: "No matching package found.",
-        });
-      } else {
-        res.status(200).json({
-          message: "Successfully hotel details gets.",
-          getPackage,
-        });
-      }
+      res.status(200).json({
+        message: "Successfully hotel details gets.",
+        getPackage,
+      });
     }
   } catch (error) {
-    console.log(error);
+    
     res.send("Internal server error");
   }
 };
