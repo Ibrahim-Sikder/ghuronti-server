@@ -77,7 +77,6 @@ exports.deleteTrainPackage = async (req, res) => {
   }
 };
 
-
 exports.getSpecificPackage = async (req, res) => {
   try {
     const id = req.params.id;
@@ -113,9 +112,7 @@ exports.updateTrainPackage = async (req, res) => {
 exports.createTrainConfirmation = async (req, res) => {
   try {
     const postTrainConfirmation = new TrainConfirmation(req.body);
-    console.log(postTrainConfirmation);
     const result = await postTrainConfirmation.save();
-    console.log(result);
     res.status(200).json({
       message: "Send request for train confirmation.",
       result,
@@ -125,28 +122,91 @@ exports.createTrainConfirmation = async (req, res) => {
     res.send("Internal server error");
   }
 };
-exports.updateTrainConfirmation = async (req, res) => {
+// exports.updateTrainConfirmation = async (req, res) => {
+//   try {
+//     const id = req.params.id;
+//     const updateTrainConfirmation = new TrainConfirmation(req.body);
+//     const updateUser = await TrainConfirmation.updateOne(
+//       { _id: id },
+//       { $set: updateTrainConfirmation },
+//       { runValidators: true }
+//     );
+
+//     if (updateUser.nModified === 0) {
+//       return res.status(404).json({
+//         message: "Data not found",
+//       });
+//     }
+
+//     res.status(200).json({
+//       message: "Data updated successfully",
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "Update failed: " + error.message,
+//     });
+//   }
+// };
+exports.getConfirmationDetails = async (req, res) => {
+  try {
+    const { email, profile_type } = req.query;
+    console.log(email, profile_type);
+
+    const result = await TrainConfirmation.find({ email, profile_type }).sort({
+      createdAt: -1,
+    });
+    console.log(result);
+    res.status(200).json({
+      message: "Successfully train confirmation gets.",
+      result,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message, // Provide the specific error message
+    });
+  }
+};
+exports.approvedUpdate = async (req, res) => {
   try {
     const id = req.params.id;
-    const updateTrainConfirmation = new TrainConfirmation(req.body);
-    const updateUser = await TrainConfirmation.updateOne(
+ 
+    const updateTrainConfirmation = await TrainConfirmation.updateOne(
       { _id: id },
-      { $set: updateTrainConfirmation },
+      { $set: { approved: "approved" } },
       { runValidators: true }
     );
-
-    if (updateUser.nModified === 0) {
-      return res.status(404).json({
-        message: "Data not found",
-      });
-    }
-
+     console.log(updateTrainConfirmation)
     res.status(200).json({
-      message: "Data updated successfully",
+      message: "Approved successful.",
+      result,
     });
   } catch (error) {
     res.status(500).json({
-      message: "Update failed: " + error.message,
+      message: error.message,
+      error: error.message, // Provide the specific error message
+    });
+  }
+};
+exports.cancelUpdate = async (req, res) => {
+  try {
+    const id = req.params.id;
+ 
+    const updateTrainConfirmation = await TrainConfirmation.updateOne(
+      { _id: id },
+      { $set: { approved: "rejected" } },
+      { runValidators: true }
+    );
+     console.log(updateTrainConfirmation)
+    res.status(200).json({
+      message: "Approved successful.",
+      result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      error: error.message, // Provide the specific error message
     });
   }
 };

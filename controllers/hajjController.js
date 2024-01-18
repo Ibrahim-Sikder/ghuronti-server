@@ -152,7 +152,7 @@ exports.postHajjRequirement = async (req, res) => {
   try {
     const postHajjRequirement = new HajjRequirement(req.body);
     const result = await postHajjRequirement.save();
-    console.log(result);
+   
     res.status(200).json({
       message: "Successfully hajj requirements details posted.",
       result,

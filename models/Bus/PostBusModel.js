@@ -6,6 +6,10 @@ const postBusSchema = new mongoose.Schema(
       type: Number,
       // required: [true, "Name is required"],
     },
+    bus_name: {
+      type: String,
+      // required: [true, "Name is required"],
+    },
     starting_point: {
       type: String,
       // required: [true, "Name is required"],

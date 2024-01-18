@@ -4,6 +4,9 @@ const {
   sendVerificationEmail,
 } = require("../utils/mail/sendVerificationEmail");
 const crypto = require("crypto");
+
+
+
 exports.registerUser = async (req, res) => {
   try {
     const credentials = req.body;
@@ -138,26 +141,57 @@ exports.confirmationUser = async (req, res) => {
     //   { confirmation_token: token },
     //   user.confirmation_token
     // );
-    res.cookie("token", user.confirmation_token, {
-      httpOnly: true,
-      secure: true, // Set to true to ensure the cookie is only sent over HTTPS
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-    });
-
     user.isVerified = true;
+
+    // res.cookie("token", user.confirmation_token, {
+    //   httpOnly: true,
+    //   secure: true, // Set to true to ensure the cookie is only sent over HTTPS
+    //   maxAge: 30 * 24 * 60 * 60 * 1000,
+    // });
+
+
     user.confirmation_token = undefined;
     user.token_expire = undefined;
 
-    user.save();
+    // Save the user changes to the database
+    await user.save();
 
-    res.redirect("http://localhost:3000");
-
-    // res.status(200).json({
-    //   message:
-    //     "Success! Your account has been verified, and you are now ready to access our services. Welcome aboard!",
+   
+    // res.cookie("em", user.email, {
+    //   httpOnly: true,
+    //   secure: true, // Set to true to ensure the cookie is only sent over HTTPS
+    //   maxAge: 30 * 24 * 60 * 60 * 1000,
     // });
+
+    
+
+    res.redirect("http://localhost:3000/login");
+
+    res.status(200).json({
+      message:
+        "Success! Your account has been verified, and you are now ready to access our services. Welcome aboard!",
+    });
   } catch (error) {
     console.error("Error registering user:", error);
     return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.getUser = async (req, res) => {
+  try {
+    const email = req.params.email;
+ 
+    const result = await Users.find({ email }).sort({ createdAt: -1 });
+    const getUser = result[0]
+    res.status(200).json({
+      message: "Successfully user get.",
+      getUser,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message, // Provide the specific error message
+    });
   }
 };

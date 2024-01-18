@@ -34,12 +34,23 @@ const trainSchema = new mongoose.Schema(
       type: String,
       // required: [true, "Surname is required"],
     },
+    confirmation_email: {
+      type: String,
+      // required: [true, "Surname is required"],
+    },
+    profile_type: {
+      type: String,
+      // required: [true, "Surname is required"],
+    },
     email: {
       type: String,
       // required: [true, "Surname is required"],
     },
-    
-    
+    approved: {
+      type: String  ,
+      default: "not",
+      // required: [true, "Surname is required"],
+    },
   },
   {
     timestamps: true,
