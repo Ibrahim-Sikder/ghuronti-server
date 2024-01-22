@@ -46,6 +46,10 @@ const trainSchema = new mongoose.Schema(
       type: String,
       // required: [true, "Surname is required"],
     },
+    user_type: {
+      type: String,
+      // required: [true, "Email is required"],
+    },
     approved: {
       type: String  ,
       default: "pending",

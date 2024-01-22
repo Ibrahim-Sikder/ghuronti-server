@@ -40,6 +40,10 @@ const busSchema = new mongoose.Schema(
     email: {
       type: String,
     },
+    user_type: {
+      type: String,
+      // required: [true, "Email is required"],
+    },
     approved: {
       type: String,
       default: "pending",

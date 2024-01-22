@@ -22,7 +22,7 @@ exports.getToursPackages = async (req, res) => {
     const { country_name, travel_from, journey_date, child, adult } = req.body;
 
     let getPackage;
-    if (!country_name || !travel_from || !journey_date || !child || !adult) {
+    if (!country_name || !travel_from || !journey_date || !adult) {
       res.status(200).json({
         message: "Please select all the field.",
       });
@@ -163,5 +163,69 @@ exports.createToursConfirmation = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.send("Internal server error");
+  }
+};
+
+
+exports.getConfirmationDetails = async (req, res) => {
+  try {
+    const { email, profile_type } = req.query;
+
+    const result = await ToursConfirmation.find({ email, profile_type }).sort({
+      createdAt: -1,
+    });
+    console.log(result);
+    res.status(200).json({
+      message: "Successfully tours confirmation gets.",
+      result,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message, // Provide the specific error message
+    });
+  }
+};
+exports.approvedUpdate = async (req, res) => {
+  try {
+    const id = req.params.id;
+ 
+    const updateToursConfirmation = await ToursConfirmation.updateOne(
+      { _id: id },
+      { $set: { approved: "approved" } },
+      { runValidators: true }
+    );
+ 
+    res.status(200).json({
+      message: "Approved successful.",
+       
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      error: error.message, // Provide the specific error message
+    });
+  }
+};
+exports.cancelUpdate = async (req, res) => {
+  try {
+    const id = req.params.id;
+ 
+    const updateToursConfirmation = await ToursConfirmation.updateOne(
+      { _id: id },
+      { $set: { approved: "rejected" } },
+      { runValidators: true }
+    );
+     
+    res.status(200).json({
+      message: "Rejected",
+   
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      error: error.message, // Provide the specific error message
+    });
   }
 };
