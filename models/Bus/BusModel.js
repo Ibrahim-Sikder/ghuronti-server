@@ -25,13 +25,24 @@ const busSchema = new mongoose.Schema(
     name: {
       type: String,
     },
-    email: {
-      type: String,
-    },
 
     mobile_number: {
       type: Number,
       required: [true, "Mobile number is required"],
+    },
+    confirmation_email: {
+      type: String,
+      required: [true, "Confirmation email is required"],
+    },
+    profile_type: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
+    approved: {
+      type: String,
+      default: "pending",
     },
   },
   {

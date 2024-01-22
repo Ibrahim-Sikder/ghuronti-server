@@ -225,3 +225,64 @@ exports.createBusConfirmation = async (req, res) => {
     res.send("Internal server error");
   }
 };
+
+exports.getConfirmationDetails = async (req, res) => {
+  try {
+    const { email, profile_type } = req.query;
+    console.log(email, profile_type);
+
+    const result = await BusConfirmation.find({ email, profile_type }).sort({
+      createdAt: -1,
+    });
+    console.log(result);
+    res.status(200).json({
+      message: "Successfully bus confirmation gets.",
+      result,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,  
+    });
+  }
+};
+exports.approvedUpdate = async (req, res) => {
+  try {
+    const id = req.params.id;
+ 
+    const updateBusConfirmation = await BusConfirmation.updateOne(
+      { _id: id },
+      { $set: { approved: "approved" } },
+      { runValidators: true }
+    );
+    
+    res.status(200).json({
+      message: "Approved successful.",
+      
+    });
+  } catch (error) {
+    res.status(500).json("Internal server error");
+  }
+};
+exports.cancelUpdate = async (req, res) => {
+  try {
+    const id = req.params.id;
+ 
+    const updateBusConfirmation = await BusConfirmation.updateOne(
+      { _id: id },
+      { $set: { approved: "rejected" } },
+      { runValidators: true }
+    );
+     
+    res.status(200).json({
+      message: "Rejected",
+    
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      error: error.message, // Provide the specific error message
+    });
+  }
+};

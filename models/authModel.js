@@ -76,6 +76,10 @@ const authSchema = new mongoose.Schema(
     agree: {
       type: Boolean,
     },
+    user_type: {
+      type: String,
+      default: "user",
+    },
     profile_type: {
       type: String,
       default: "b2c",

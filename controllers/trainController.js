@@ -177,10 +177,10 @@ exports.approvedUpdate = async (req, res) => {
       { $set: { approved: "approved" } },
       { runValidators: true }
     );
-     console.log(updateTrainConfirmation)
+ 
     res.status(200).json({
       message: "Approved successful.",
-      result,
+       
     });
   } catch (error) {
     res.status(500).json({
@@ -200,8 +200,8 @@ exports.cancelUpdate = async (req, res) => {
     );
      console.log(updateTrainConfirmation)
     res.status(200).json({
-      message: "Approved successful.",
-      result,
+      message: "Rejected",
+   
     });
   } catch (error) {
     res.status(500).json({

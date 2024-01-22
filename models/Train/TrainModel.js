@@ -48,7 +48,7 @@ const trainSchema = new mongoose.Schema(
     },
     approved: {
       type: String  ,
-      default: "not",
+      default: "pending",
       // required: [true, "Surname is required"],
     },
   },
