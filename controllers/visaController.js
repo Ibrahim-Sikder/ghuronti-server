@@ -235,3 +235,65 @@ exports.createVisaConfirmation = async (req, res) => {
     res.send("Internal server error");
   }
 };
+
+exports.getConfirmationDetails = async (req, res) => {
+  try {
+    const { email, profile_type } = req.query;
+
+    const result = await VisaConfirmation.find({ email, profile_type }).sort({
+      createdAt: -1,
+    });
+    res.status(200).json({
+      message: "Successfully visa confirmation gets.",
+      result,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message, 
+    });
+  }
+};
+exports.approvedUpdate = async (req, res) => {
+  try {
+    const id = req.params.id;
+ 
+    const updateVisaConfirmation = await VisaConfirmation.updateOne(
+      { _id: id },
+      { $set: { approved: "approved" } },
+      { runValidators: true }
+    );
+ 
+    res.status(200).json({
+      message: "Approved successful.",
+       
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      error: error.message, // Provide the specific error message
+    });
+  }
+};
+exports.cancelUpdate = async (req, res) => {
+  try {
+    const id = req.params.id;
+ 
+    const updateVisaConfirmation = await VisaConfirmation.updateOne(
+      { _id: id },
+      { $set: { approved: "rejected" } },
+      { runValidators: true }
+    );
+   
+    res.status(200).json({
+      message: "Rejected",
+   
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      error: error.message, // Provide the specific error message
+    });
+  }
+};

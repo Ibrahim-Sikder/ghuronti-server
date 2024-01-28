@@ -13,7 +13,12 @@ router
 router
   .route("/hotel/:id")
   .get(hotelController.getSpecificPackage)
+  .put(hotelController.approvedUpdate)
+  .patch(hotelController.cancelUpdate)
   .delete(hotelController.deleteHotelPackage);
 router.route("/hotel/update/:id").put(hotelController.updateHotelPackage);
+router
+  .route("/confirmation/hotel")
+  .get(hotelController.getConfirmationDetails)
 
 module.exports = router;

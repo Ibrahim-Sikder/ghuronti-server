@@ -11,8 +11,13 @@ router.route("/visa/gets/package").post(visaController.getVisaPackages);
 router
   .route("/visa/:id")
   .get(visaController.getSpecificPackage)
+  .put(visaController.approvedUpdate)
+  .patch(visaController.cancelUpdate)
   .delete(visaController.deleteVisaPackage);
 router.route("/visa/update/:id").put(visaController.updateVisaPackage);
+router
+  .route("/confirmation/visa")
+  .get(visaController.getConfirmationDetails)
 // for requirement
 // router
 //   .route("/visa/requirement/post/type")
