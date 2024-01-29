@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const umrahConfirmationSchema = new mongoose.Schema(
+const hajjConfirmationSchema = new mongoose.Schema(
   {
     city: {
       type: String,
@@ -65,9 +65,9 @@ const umrahConfirmationSchema = new mongoose.Schema(
   }
 );
 
-const UmrahConfirmation = mongoose.model(
-  "UmrahConfirmation",
-  umrahConfirmationSchema
+const HajjConfirmation = mongoose.model(
+  "HajjConfirmation",
+  hajjConfirmationSchema
 );
 
-module.exports = UmrahConfirmation;
+module.exports = HajjConfirmation;

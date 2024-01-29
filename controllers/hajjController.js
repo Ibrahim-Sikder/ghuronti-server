@@ -1,5 +1,6 @@
 const HajjDetails = require("../models/Hajj/HajjPackageModel");
 const HajjRequirement = require("../models/Hajj/HajjRequirement");
+const HajjConfirmation= require("../models/Hajj/HajjConfirmation");
 
 exports.createHajjDetails = async (req, res) => {
   try {
@@ -17,7 +18,7 @@ exports.createHajjDetails = async (req, res) => {
 exports.getOneHajjDetails = async (req, res) => {
   try {
     const { hajj_package } = req.body;
-
+  
     let economy;
 
     if (hajj_package === "Economy Hajj Package") {
@@ -71,7 +72,7 @@ exports.getPackageForAddPage = async (req, res) => {
 exports.getHajjPackages = async (req, res) => {
   try {
     const { hajj_package } = req.body;
-    const getPackage = await HajjDetails.find({ hajj_package });
+    const getPackage = await HajjDetails.find({ hajj_package }).sort({ createdAt: -1 });
 
     res.status(200).json({ getPackage });
   } catch (error) {
@@ -175,20 +176,7 @@ exports.getAllHajjRequirement = async (req, res) => {
     res.send("Internal server error");
   }
 };
-// exports.getVisaRequirement = async (req, res) => {
-//   try {
-//     const { visa_type } = req.body;
 
-//     const result = await HajjRequirement.findOne({ visa_type });
-
-//     res.status(200).json({
-//       message: "Successfully visa requirement gets",
-//       result,
-//     });
-//   } catch (error) {
-//     res.send("Internal server error");
-//   }
-// };
 exports.deleteHajjRequirement = async (req, res) => {
   try {
     const id = req.params.id;
@@ -233,5 +221,88 @@ exports.getSingleHajjRequirement = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// confirmatuion 
+
+
+exports.createHajjPost = async (req, res) => {
+  try {
+    const postHajj = new HajjConfirmation(req.body);
+    
+    const result = await postHajj.save();
+    console.log(result);
+    res.status(200).json({
+      message: "Send request for hajj.",
+      result,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Internal server error");
+  }
+};
+
+
+exports.getConfirmationDetails = async (req, res) => {
+  try {
+    const { email, profile_type } = req.query;
+
+    const result = await HajjConfirmation.find({ email, profile_type }).sort({
+      createdAt: -1,
+    });
+ 
+    res.status(200).json({
+      message: "Successfully hajj confirmation gets.",
+      result,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message, // Provide the specific error message
+    });
+  }
+};
+exports.approvedUpdate = async (req, res) => {
+  try {
+    const id = req.params.id;
+ 
+    const updateHajjConfirmation = await HajjConfirmation.updateOne(
+      { _id: id },
+      { $set: { approved: "approved" } },
+      { runValidators: true }
+    );
+ 
+    res.status(200).json({
+      message: "Approved successful.",
+       
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      error: error.message, // Provide the specific error message
+    });
+  }
+};
+exports.cancelUpdate = async (req, res) => {
+  try {
+    const id = req.params.id;
+ 
+    const updateHajjConfirmation = await HajjConfirmation.updateOne(
+      { _id: id },
+      { $set: { approved: "rejected" } },
+      { runValidators: true }
+    );
+     
+    res.status(200).json({
+      message: "Rejected",
+   
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+      error: error.message, // Provide the specific error message
+    });
   }
 };

@@ -11,7 +11,15 @@ router.route("/hajj/filter/getOne").post(hajjController.getOneHajjDetails);
 router
   .route("/hajj/:id")
   .get(hajjController.getSpecificPackage)
+  .put(hajjController.approvedUpdate)
+  .patch(hajjController.cancelUpdate)
   .delete(hajjController.deleteHajjPackage);
 router.route("/hajj/update/:id").put(hajjController.updateHajjPackage);
+router
+  .route("/confirmation/hajj/post/one")
+  .post(hajjController.createHajjPost)
+router
+  .route("/confirmation/hajj")
+  .get(hajjController.getConfirmationDetails)
 
 module.exports = router;
