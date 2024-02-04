@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const authSchema = new mongoose.Schema(
   {
@@ -14,11 +14,39 @@ const authSchema = new mongoose.Schema(
       type: String,
       // required: [true, "City is required"],
     },
+    title: {
+      type: String,
+      // required: [true, "City is required"],
+    },
     given_name: {
       type: String,
       // required: [true, "City is required"],
     },
     surname: {
+      type: String,
+      // required: [true, "Passenger number is required"],
+    },
+    gender: {
+      type: String,
+      // required: [true, "Passenger number is required"],
+    },
+    nationality: {
+      type: String,
+      // required: [true, "Passenger number is required"],
+    },
+    date: {
+      type: String,
+      // required: [true, "Passenger number is required"],
+    },
+    passport_number: {
+      type: String,
+      // required: [true, "Passenger number is required"],
+    },
+    passport_expire_date: {
+      type: String,
+      // required: [true, "Passenger number is required"],
+    },
+    address: {
       type: String,
       // required: [true, "Passenger number is required"],
     },
@@ -84,6 +112,9 @@ const authSchema = new mongoose.Schema(
       type: String,
       default: "b2c",
     },
+    forgot_pass_token: {
+      type: String,
+    },
     confirmation_token: {
       type: String,
     },
@@ -94,6 +125,22 @@ const authSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    profile_image: [
+      {
+        type: String,
+ 
+      },
+    ],
+    passport_file: [
+      {
+        type: String,
+      },
+    ],
+    visa_file: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     timestamps: true,
@@ -118,9 +165,10 @@ authSchema.pre("save", async function (next) {
   }
 });
 
+
 authSchema.methods.comparePassword = async function (password, hash) {
   try {
-    const isPasswordValid = await bcrypt.compare(password, hash);
+    const isPasswordValid = bcrypt.compareSync(password, hash);
 
     return isPasswordValid;
   } catch (error) {
@@ -142,6 +190,16 @@ authSchema.methods.comparePassword = async function (password, hash) {
 authSchema.methods.generateConfirmationToken = function () {
   const token = crypto.randomBytes(64).toString("hex");
   this.confirmation_token = token;
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+
+  this.token_expire = date;
+  return token;
+};
+
+authSchema.methods.generateForgotPasswordToken = function () {
+  const token = crypto.randomBytes(64).toString("hex");
+  this.forgot_pass_token = token;
   const date = new Date();
   date.setDate(date.getDate() + 1);
 
