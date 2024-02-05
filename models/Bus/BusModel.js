@@ -25,6 +25,9 @@ const busSchema = new mongoose.Schema(
     name: {
       type: String,
     },
+    gender: {
+      type: String,
+    },
 
     mobile_number: {
       type: Number,
