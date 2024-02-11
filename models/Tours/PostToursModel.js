@@ -14,6 +14,10 @@ const postToursSchema = new mongoose.Schema(
       type: String,
       // required: [true, "Name is required"],
     },
+    short_description: {
+      type: String,
+      // required: [true, "Name is required"],
+    },
     journey_date: {
       type: String,
       // required: [true, "Email is required"],
@@ -74,6 +78,9 @@ const postToursSchema = new mongoose.Schema(
     price_hight_to_low: {
       type: Number,
       // required: [true, "Surname is required"],
+    },
+    tour_package_name : {
+      type : String
     },
     image: [{
       type: String,

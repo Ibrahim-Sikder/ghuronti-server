@@ -18,6 +18,9 @@ router.route("/train/update/:id").put(trainController.updateTrainPackage);
 router
   .route("/confirmation/train")
   .get(trainController.getConfirmationDetails)
+router
+  .route("/confirmation/train/all")
+  .get(trainController.getConfirmationData)
   
 // .put(trainController.updateTrainConfirmation)
 // .delete(trainController.deleteTrainPackage);

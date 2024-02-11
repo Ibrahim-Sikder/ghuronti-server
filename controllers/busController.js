@@ -226,6 +226,28 @@ exports.createBusConfirmation = async (req, res) => {
   }
 };
 
+
+exports.getConfirmationData = async (req, res) => {
+  try {
+    const currentDate = new Date();
+
+    // Set the time to midnight
+    const startOfDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0);
+
+    // Set the time to 11:59:59 PM
+    const endOfDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59, 59);
+
+    // Find documents created between startOfDay and endOfDay
+    const getPackage = await BusConfirmation.find({
+      createdAt: { $gte: startOfDay, $lte: endOfDay }  
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({ message: "Successfully get bus data for the current day", getPackage });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 exports.getConfirmationDetails = async (req, res) => {
   try {
     const { email, profile_type } = req.query;

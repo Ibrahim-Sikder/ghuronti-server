@@ -19,5 +19,6 @@ router
   .delete(busController.deleteBusPackage);
 router.route("/bus/update/:id").put(busController.updateBusPackage);
 router.route("/confirmation/bus").get(busController.getConfirmationDetails);
+router.route("/confirmation/bus/all").get(busController.getConfirmationData);
 
 module.exports = router;

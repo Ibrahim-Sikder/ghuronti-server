@@ -147,6 +147,29 @@ exports.createTrainConfirmation = async (req, res) => {
 //     });
 //   }
 // };
+
+exports.getConfirmationData = async (req, res) => {
+  try {
+    const currentDate = new Date();
+
+    // Set the time to midnight
+    const startOfDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 0, 0, 0);
+
+    // Set the time to 11:59:59 PM
+    const endOfDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59, 59);
+
+    // Find documents created between startOfDay and endOfDay
+    const getPackage = await TrainConfirmation.find({
+      createdAt: { $gte: startOfDay, $lte: endOfDay }  
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({ message: "Successfully get train data for the current day", getPackage });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 exports.getConfirmationDetails = async (req, res) => {
   try {
     const { email, profile_type } = req.query;
@@ -171,16 +194,15 @@ exports.getConfirmationDetails = async (req, res) => {
 exports.approvedUpdate = async (req, res) => {
   try {
     const id = req.params.id;
- 
+
     const updateTrainConfirmation = await TrainConfirmation.updateOne(
       { _id: id },
       { $set: { approved: "approved" } },
       { runValidators: true }
     );
- 
+
     res.status(200).json({
       message: "Approved successful.",
-       
     });
   } catch (error) {
     res.status(500).json({
@@ -192,16 +214,15 @@ exports.approvedUpdate = async (req, res) => {
 exports.cancelUpdate = async (req, res) => {
   try {
     const id = req.params.id;
- 
+
     const updateTrainConfirmation = await TrainConfirmation.updateOne(
       { _id: id },
       { $set: { approved: "rejected" } },
       { runValidators: true }
     );
-     console.log(updateTrainConfirmation)
+    console.log(updateTrainConfirmation);
     res.status(200).json({
       message: "Rejected",
-   
     });
   } catch (error) {
     res.status(500).json({

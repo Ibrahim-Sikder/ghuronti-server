@@ -14,6 +14,8 @@ const hajjRoute = require("./routes/hajjRoute");
 const hajjRequirementRoute = require("./routes/hajjRequirement")
 const visaRequirement = require("./routes/visaRequirement");
 const authRoute = require("./routes/authRoute")
+const domesticHotelRoute = require("./routes/domesticHotel")
+const internationalHotelRoute = require("./routes/internationalHotel")
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 
@@ -23,6 +25,8 @@ dbConnect();
 
 app.use("/api/v1", umrahRoute);
 app.use("/api/v1", hotelRoute);
+app.use("/api/v1", domesticHotelRoute);
+app.use("/api/v1", internationalHotelRoute);
 app.use("/api/v1", visaRoute);
 app.use("/api/v1", visaRequirement);
 app.use("/api/v1", busRoute);
