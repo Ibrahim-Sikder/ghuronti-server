@@ -80,6 +80,10 @@ const postVisaSchema = new mongoose.Schema(
       type: String,
       // required: [true, "Surname is required"],
     },
+    description: {
+      type: String,
+      // required: [true, "Surname is required"],
+    },
   },
   {
     timestamps: true,
